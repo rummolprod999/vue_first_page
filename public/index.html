@@ -9,12 +9,13 @@
     el: '#app',
     data: {counter:0},
     methods:{
-      increase: function(){
+      increase: function(event){
+        console.log(event);
         this.counter++;
       },
-      decrease: function(){
-        if(this.counter>0)
-          this.counter--;
+      decrease: function(event){
+        console.log(event);
+        this.counter--;
       }
     }
   });
