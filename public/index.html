@@ -3,38 +3,29 @@
 <head>
   <title>Изучаем Vue.js</title>
   <meta charset="utf-8" />
+  <style>
+    .region{
+      background-color: #999;
+      width: 100px;
+      height: 100px;
+      display: inline-block;
+      margin: 10px;
+    }
+    .active{
+      background-color:red;
+    }
+  </style>
 </head>
 <body>
 <div id="app">
-  <input type="text" v-model="name" />
-  <input type="text" v-model="age" />
-  <p>Имя: {{name}}   Возраст {{age}}</p>
-  <p>{{checkAge()}}</p>
-  <p>{{enabled}}</p>
+  <div class="region" v-bind:class="{active: isActive}" v-on:click="isActive=!isActive"></div>
+  <div class="region"></div>
 </div>
 <script src="https://unpkg.com/vue"></script>
 <script>
   var app = new Vue({
-    el: '#app',
-    data: {name:'Tom', age:25},
-    computed:{
-      enabled: function(){
-        console.log("computed");
-        if(this.age > 17)
-          return "доступ разрешен";
-        else
-          return "доступ запрещен";
-      }
-    },
-    methods:{
-      checkAge: function(){
-        console.log("method");
-        if(this.age > 17)
-          return "доступ разрешен";
-        else
-          return "доступ запрещен";
-      }
-    }
+    el: "#app",
+    data: {isActive : false}
   });
 </script>
 </body>
