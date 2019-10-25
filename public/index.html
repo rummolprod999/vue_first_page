@@ -6,15 +6,25 @@
 </head>
 <body>
 <div id="app">
-  <input type="text" v-model="name" /><br><br>
   <input type="text" v-model="name" />
-  <p>Name: {{name}}</p>
+  <input type="text" v-model="age" />
+  <p>Имя: {{name}}   Возраст {{age}}</p>
+  <p>{{checkAge()}}</p>
 </div>
 <script src="https://unpkg.com/vue"></script>
 <script>
   var app = new Vue({
     el: '#app',
-    data: {name: 'Tom', age:99}
+    data: {name:'Tom', age:25},
+    methods:{
+      checkAge: function(){
+        console.log("method");
+        if(this.age > 17)
+          return "доступ разрешен";
+        else
+          return "доступ запрещен";
+      }
+    }
   });
 </script>
 </body>
