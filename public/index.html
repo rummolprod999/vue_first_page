@@ -6,16 +6,16 @@
 </head>
 <body>
 <div id="app">
-  <p v-if="visible">Первый параграф</p>
-  <p>Второй параграф</p>
-  <button v-on:click="visible=!visible">{{visible?'Скрыть':'Показать'}}</button>
+  <ul>
+    <li v-for="phone in phones">{{phone}}</li>
+  </ul>
 </div>
 <script src="https://unpkg.com/vue"></script>
 <script>
   var app = new Vue({
     el: '#app',
     data: {
-      visible: true
+      phones: ['iPhone 7', 'Galaxy S8', 'Nokia N8', 'Xiaomi Mi6']
     }
   });
 </script>
