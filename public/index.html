@@ -6,13 +6,19 @@
 </head>
 <body>
 <div id="app">
-  <a v-bind:href="link">{{text}}</a>
+  <input type="text" v-on:input="setMessage" />
+  <p v-once>{{message}}</p>
 </div>
 <script src="https://unpkg.com/vue"></script>
 <script>
   var app = new Vue({
     el: '#app',
-    data: {text: 'Google', link:'https://google.com'}
+    data: {message:'Hello'},
+    methods: {
+      setMessage: function(event){
+        this.message = event.target.value;
+      }
+    }
   });
 </script>
 </body>
