@@ -1,46 +1,25 @@
-<!DOCTYPE html>
 <html>
 <head>
     <title>Компоненты Vue.js</title>
     <meta charset="utf-8" />
-    <style>
-        .userdetails{
-            border-bottom: 1px solid #888;
-        }
-    </style>
 </head>
 <body>
 <div id="app">
-    <userslist :users="users"></userslist>
+    <input type="text" v-model="name" /><br><br>
+    <input type="number" v-model.number="age" /><br><br>
+    <user :name="name" :age="age"></user>
 </div>
 <script src="https://unpkg.com/vue"></script>
 <script>
-    Vue.component('userdetails', {
-        props: ["user"],
-        template: `<div class="userdetails">
-                    <p>Name: {{user.name}}</p>
-                    <p>Age: {{user.age}}</p>
-                </div>`
-    });
-    Vue.component('userslist', {
-        props: ["users"],
-        template: `<div>
-                <userdetails v-for="user in users"  :key="user.name" :user="user"></userdetails>
-            </div>`
-    });
+    Vue.component('user', {
+        props: ['name', 'age'],
+        template: '<div><h2>User</h2><p>Name: {{name}}</p><p>Age: {{age}}</p></div>'
+    })
     new Vue({
         el: "#app",
         data: {
-            users: [{
-                name: 'Tom',
-                age: 18
-            },{
-                name: 'Bob',
-                age: 23
-            },{
-                name: 'Alice',
-                age: 21
-            }]
+            name: '',
+            age: 18
         }
     });
 </script>
