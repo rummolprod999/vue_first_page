@@ -7,45 +7,34 @@
 <body>
 <div id="app">
     <h2>Список пользователей</h2>
-    <userform :users="users"></userform>
+    <userform :user="user"></userform>
     <div>
         <useritem v-for="(user, index) in users"
+                  :key="index"
                   :user="user"
                   :index="index"
-                  :key="index"
-                  v-on:userdelete="remove">
+                  v-on:userchange="change">
         </useritem>
     </div>
 </div>
 <script src="https://unpkg.com/vue"></script>
 <script>
     Vue.component('userform', {
-        props: ["users"],
-        data: function () {
-            return {
-                user: {name:'', age:18}
-            }
-        },
+        props: ["user"],
         template: `<div>
                     <input type="text" v-model="user.name" />
                     <input type="number" v-model="user.age" />
-                    <button  v-on:click="userAdd">Add</button>
                 </div>`,
-        methods: {
-            userAdd: function(event){
-                this.users.push({name:this.user.name, age: this.user.age});
-            }
-        }
     });
     Vue.component('useritem', {
         props: ["user", "index"],
         template: `<div>
                     <p>Name: {{user.name}} <br> Age: {{user.age}}</p>
-                    <button  v-on:click="userDelete(index)">Delete</button>
+                    <button  v-on:click="userChange(index)">Change</button>
                 </div>`,
         methods: {
-            userDelete: function(index){
-                this.$emit('userdelete', index);
+            userChange: function(index){
+                this.$emit('userchange', index);
             }
         }
     });
@@ -56,11 +45,12 @@
                 {name: 'Tom', age: 23},
                 {name: 'Bob', age: 26},
                 {name: 'Alice', age: 28}
-            ]
+            ],
+            user:{}
         },
         methods:{
-            remove: function(index){
-                this.users.splice(index, 1)
+            change: function(index){
+                this.user = this.users[index];
             }
         }
     });
