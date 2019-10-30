@@ -6,31 +6,61 @@
 </head>
 <body>
 <div id="app">
-    <h2>Hello, {{name}}</h2>
-    <useredit :user="name" v-on:userchange="change"></useredit>
+    <h2>Список пользователей</h2>
+    <userform :users="users"></userform>
+    <div>
+        <useritem v-for="(user, index) in users"
+                  :user="user"
+                  :index="index"
+                  :key="index"
+                  v-on:userdelete="remove">
+        </useritem>
+    </div>
 </div>
 <script src="https://unpkg.com/vue"></script>
 <script>
-    Vue.component('useredit', {
-        props: ["user"],
+    Vue.component('userform', {
+        props: ["users"],
         data: function () {
-            return { userName: this.user}
+            return {
+                user: {name:'', age:18}
+            }
         },
-        template: '<div><input type="text" v-model="userName" v-on:input="onUserChange" /><p>Name: {{userName}}</p></div>',
+        template: `<div>
+                    <input type="text" v-model="user.name" />
+                    <input type="number" v-model="user.age" />
+                    <button  v-on:click="userAdd">Add</button>
+                </div>`,
         methods: {
-            onUserChange: function(){
-                this.$emit('userchange', this.userName);
+            userAdd: function(event){
+                this.users.push({name:this.user.name, age: this.user.age});
+            }
+        }
+    });
+    Vue.component('useritem', {
+        props: ["user", "index"],
+        template: `<div>
+                    <p>Name: {{user.name}} <br> Age: {{user.age}}</p>
+                    <button  v-on:click="userDelete(index)">Delete</button>
+                </div>`,
+        methods: {
+            userDelete: function(index){
+                this.$emit('userdelete', index);
             }
         }
     });
     new Vue({
         el: "#app",
         data: {
-            name: 'Tom'
+            users:[
+                {name: 'Tom', age: 23},
+                {name: 'Bob', age: 26},
+                {name: 'Alice', age: 28}
+            ]
         },
         methods:{
-            change: function(value){
-                this.name = value;
+            remove: function(index){
+                this.users.splice(index, 1)
             }
         }
     });
