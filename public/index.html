@@ -6,55 +6,45 @@
 </head>
 <body>
 <div id="app">
-    <h2>Список пользователей</h2>
-    <userform :addfn="add"></userform>
-    <div>
-        <useritem v-for="(user, index) in users"
-                  :user="user"
-                  :key="index"
-                  :index="index"
-                  :removefn="remove">
-        </useritem>
-    </div>
+    <h2>User</h2>
+    <useredit :user="user"></useredit>
+    <userinfo :user="user"></userinfo>
 </div>
 <script src="https://unpkg.com/vue"></script>
 <script>
-    Vue.component('userform', {
-        props: ["addfn"],
+    var eventBus = new Vue();
+
+    Vue.component('useredit', {
+        props: ["user"],
+        template: `<div>
+                    <input v-model="userName" />
+                    <button @click="save">Save</button>
+                </div>`,
         data: function () {
-            return {
-                user: {name:'', age:18}
-            }
+            return { userName: this.user}
         },
-        template: `<div>
-                    <input type="text" v-model="user.name" />
-                    <input type="number" v-model="user.age" />
-                    <button  v-on:click="addfn({name:user.name, age: user.age})">Add</button>
-                </div>`
+        methods:{
+            save(){
+                eventBus.$emit("userchange", this.userName);
+            }
+        }
     });
-    Vue.component('useritem', {
-        props: ["user", "index", "removefn"],
-        template: `<div>
-                    <p>Name: {{user.name}} <br> Age: {{user.age}}</p>
-                    <button  v-on:click="removefn(index)">Delete</button>
-                </div>`
+    Vue.component('userinfo', {
+        props: ["user"],
+        template: '<div><p>Имя: {{userName}}</p></div>',
+        data: function () {
+            return { userName: this.user}
+        },
+        created(){
+            eventBus.$on("userchange", (name)=>{
+                this.userName = name;
+            });
+        }
     });
     new Vue({
         el: "#app",
-        data: {
-            users:[
-                {name: 'Tom', age: 23},
-                {name: 'Bob', age: 26},
-                {name: 'Alice', age: 28}
-            ]
-        },
-        methods:{
-            remove: function(index){
-                this.users.splice(index, 1);
-            },
-            add: function(user){
-                this.users.push(user);
-            }
+        data:{
+            user:'Tom'
         }
     });
 </script>
